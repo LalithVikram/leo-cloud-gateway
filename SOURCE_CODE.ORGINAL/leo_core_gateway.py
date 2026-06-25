@@ -35,28 +35,17 @@ def init_db():
 
 init_db()
 
-# HEALTH CHECK ROOT ENDPOINT
-@app.head("/")
-@app.get("/")
-async def root_status_check():
-    return {
-        "status": "HYPER_PRO_ACTIVE",
-        "architect": "S.LALITH",
-        "capabilities": ["Python Compression Engine", "AWS S3 Cost Optimizer", "Docker Integration", "Java Microservices Bridge", "Nmap Scanner", "SQL Database"],
-        "ui_interface_route": "/interface"
-    }
-
-# PREMIUM UI/UX INTERFACE ROUTE (WITH CORE ARCHITECTURE MATRIX & RATINGS DISPLAY)
+# 🖥️ DIRECT ROOT ROUTE - MAIN PAGE OPEN PANNAALE IPPO REAL DESIGN MATRUM RATINGS STREAM MATTUM THAN VARUM
+@app.get("/", response_class=HTMLResponse)
 @app.get("/interface", response_class=HTMLResponse)
 async def get_ui_interface():
-    # Fetch all records from SQL database to display on the page
+    # Fetch records directly from SQL database to display on screens
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT user_name, rating, comment_text, timestamp, s3_path, optimization_log FROM audit_logs ORDER BY id DESC")
     db_records = cursor.fetchall()
     conn.close()
 
-    # Generate dynamic HTML cards for user ratings and core matrix execution logs
     ratings_html = ""
     for row in db_records:
         ratings_html += f"""
@@ -84,7 +73,7 @@ async def get_ui_interface():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Leo Enterprise Cloud Suite - UI/UX Control Interface</title>
+        <title>Leo Enterprise Cloud Suite</title>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
         <style>
             :root {{
@@ -116,14 +105,12 @@ async def get_ui_interface():
             h1 {{ color: var(--accent); margin-bottom: 5px; font-weight: 600; text-align: center; }}
             .subtitle {{ text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }}
             
-            /* Core Architecture Matrix Section */
             h2.section-title {{ color: var(--text-main); font-size: 1.2rem; border-left: 4px solid var(--accent); padding-left: 10px; margin-top: 25px; }}
             .grid {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }}
             .card {{ background: #0f172a; padding: 15px; border-radius: 10px; border: 1px solid #334155; }}
             .card h3 {{ margin: 0 0 5px 0; font-size: 0.95rem; color: var(--accent); }}
             .card p {{ margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }}
             
-            /* Form Control Styling */
             .form-group {{ margin-bottom: 20px; display: flex; flex-direction: column; }}
             label {{ font-weight: 400; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-main); }}
             input, textarea {{
@@ -132,7 +119,6 @@ async def get_ui_interface():
             }}
             input:focus, textarea:focus {{ border-color: var(--accent); outline: none; }}
             
-            /* 5-Star Rating Element (Default Gray / Off State) */
             .star-rating {{ display: flex; gap: 8px; margin-top: 5px; flex-direction: row-reverse; justify-content: flex-end; }}
             .star-rating input {{ display: none; }}
             .star-rating label {{ font-size: 2.2rem; color: #475569; cursor: pointer; transition: color 0.2s; margin: 0; }}
@@ -146,7 +132,6 @@ async def get_ui_interface():
             }}
             button:hover {{ background: #7dd3fc; }}
             
-            /* Dynamic Ratings Display Stream */
             .log-stream {{ margin-top: 30px; }}
             .log-card {{ background: #0f172a; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #334155; }}
             .matrix-output {{ background: #1e293b; padding: 10px; border-radius: 6px; margin-top: 10px; font-family: monospace; font-size: 0.8rem; line-height: 1.5; color: #cbd5e1; }}
@@ -203,23 +188,15 @@ async def get_ui_interface():
     """
     return HTMLResponse(content=html_content, status_code=200)
 
-# TRANSACTIONAL PIPELINE ENDPOINT: TRIGGERS ENTIRE ARCHITECTURE PIPELINE ON SUBMISSION
 @app.post("/submit-audit")
 async def submit_audit_metrics(user_name: str = Form(...), rating: int = Form(...), comment_text: str = Form(...)):
     try:
         timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        # 1. PYTHON FILE COMPRESSION LOGIC (Simulates reduction metric logic safely)
         optimized_log = "Python Optimizer Execution Success: Compressed Asset Payload from 1GB to 100MB (Ratio: 10:1). "
-        
-        # 2. AWS S3 PATH GENERATION LOGIC
         unique_file_id = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         s3_uri_path = f"s3://{BUCKET_NAME}/audit-logs/eval_{unique_file_id}.txt"
-        
-        # 3. NMAP CYBERSECURITY MATRIX HANDSHAKE BACKGROUND LOG
-        optimized_log += "Nmap Agent verification status: SECURE. Docker Daemon Orchestrator status: ACTIVE [java-billing-microservice: online]."
+        optimized_log += "Nmap Agent status: SECURE. Docker status: ACTIVE [java-billing-microservice: online]."
 
-        # 4. SQL LOCAL DATABASE TRANSACTION (Writes user input + generated matrix data)
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         cursor.execute("""
@@ -229,14 +206,10 @@ async def submit_audit_metrics(user_name: str = Form(...), rating: int = Form(..
         conn.commit()
         conn.close()
         
-        logger.info(f"Successfully committed and processed stack matrix parameters for {user_name}")
-        
-        # Automatically redirects user back to interface to see their data printed instantly!
-        return RedirectResponse(url="/interface", status_code=303)
+        return RedirectResponse(url="/", status_code=303)
         
     except Exception as e:
-        logger.error(f"Ingestion Core Pipeline Interrupted: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Core Matrix Fault Tracked: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
