@@ -16,8 +16,8 @@ logger = logging.getLogger("LeoEnterpriseCore")
 
 app = FastAPI(
     title="LEO Enterprise Cloud Suite",
-    description="Cybersecurity Cluster Console, SQL Relational Engine & S3 Storage Interface",
-    version="2.1.0"
+    description="Cybersecurity Cluster Console, SQL Relational Engine & S3 Storage Interface with Ratings",
+    version="2.2.0"
 )
 
 app.add_middleware(
@@ -53,7 +53,7 @@ else:
     logger.warning("AWS Environment keys missing. Dynamic Cluster operating in Secure Simulation Mode.")
 
 # -------------------------------------------------------------
-# 🗄️ PRIMARY SQL DATA ARCHITECTURE (Initialization)
+# 🗄️ PRIMARY SQL DATA ARCHITECTURE (With Rating Stars Column)
 # -------------------------------------------------------------
 def init_primary_sql_database():
     conn = sqlite3.connect(DB_FILE)
@@ -63,6 +63,7 @@ def init_primary_sql_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_name TEXT NOT NULL,
             comment_text TEXT NOT NULL,
+            rating_stars INTEGER DEFAULT 5,
             s3_path TEXT NOT NULL,
             security_status TEXT NOT NULL,
             timestamp TEXT NOT NULL
@@ -77,6 +78,7 @@ init_primary_sql_database()
 class OfficeCommentPayload(BaseModel):
     user_name: str = Field(..., example="Lalith_Cloud_Architect")
     comment_text: str = Field(..., example="Secured enterprise transmission deployment.")
+    rating_stars: int = Field(5, description="Evaluation level assessment stars")
 
 # -------------------------------------------------------------
 # 🌐 UNIFIED FRONTEND INTERFACE ROUTE (HTML & Tailwind UI Console)
@@ -140,6 +142,17 @@ async def get_enterprise_ui_dashboard():
                     </div>
 
                     <div>
+                        <label class="block text-xs font-bold text-green-400 uppercase tracking-widest mb-1">Evaluation Audit Level (Select Stars)</label>
+                        <select id="ratingStars" class="w-full bg-[#1f2937] border border-gray-700 rounded p-2 text-sm focus:outline-none focus:border-green-500 text-yellow-400 font-mono">
+                            <option value="5">⭐⭐⭐⭐⭐ (5 Stars Evaluation)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 Stars Optimization)</option>
+                            <option value="3">⭐⭐⭐ (3 Stars Standard)</option>
+                            <option value="2">⭐⭐ (2 Stars Minimal)</option>
+                            <option value="1">⭐ (1 Star Critical)</option>
+                        </select>
+                    </div>
+
+                    <div>
                         <label class="block text-xs font-bold text-green-400 uppercase tracking-widest mb-1">Target Ingestion Comment Matrix</label>
                         <textarea id="commentText" rows="4" placeholder="Enter office deployment updates or cybersecurity compliance comments..." class="w-full bg-[#1f2937] border border-gray-700 rounded p-2 text-sm focus:outline-none focus:border-green-500 text-gray-100 placeholder-gray-500"></textarea>
                     </div>
@@ -168,63 +181,83 @@ async def get_enterprise_ui_dashboard():
             async function submitOfficeComment() {
                 const username = document.getElementById('username').value;
                 const commentText = document.getElementById('commentText').value;
+                const ratingStars = document.getElementById('ratingStars').value;
                 const terminal = document.getElementById('terminal');
 
                 if (!commentText.trim()) {
-                    terminal.innerHTML = `<span class="text-red-500">[VALIDATION_ERROR] Comment block cannot be empty matrix!</span>`;
+                    terminal.innerHTML = '<span class="text-red-500">[VALIDATION_ERROR] Comment block cannot be empty matrix!</span>';
                     return;
                 }
 
-                terminal.innerText = "\\n[AWS_BOTO3_SESSION] Validating Master IAM Role Credentials Mapping Token... [OK]\\n[SQL_DB_CONNECT] Binding primary relational storage data matrix array...\\n[PROCESSING] Securely encrypting stream tokens for cloud transmission...";
+                terminal.innerText = '\\n[AWS_BOTO3_SESSION] Validating Master IAM Role Credentials Mapping Token... [OK]\\n[SQL_DB_CONNECT] Binding primary relational storage data matrix array...\\n[PROCESSING] Securely encrypting stream tokens for cloud transmission...';
 
                 try {
                     const response = await fetch(`${BACKEND_API_URL}/office/submit-comment`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ user_name: username, comment_text: commentText })
+                        body: JSON.stringify({ 
+                            user_name: username, 
+                            comment_text: commentText,
+                            rating_stars: parseInt(ratingStars)
+                        })
                     });
 
                     const data = await response.json();
 
                     if (response.ok) {
-                        let channelMode = data.mode === "SIMULATION" ? "\\n<span class='text-yellow-400 font-bold'>[SYSTEM_NOTICE] Running in Security Simulation Mode (Add Render Keys to make AWS Live)</span>" : "\\n<span class='text-green-400 font-bold'>[AWS_S3_SUCCESS] Live Document asset uploaded straight to S3 bucket!</span>";
+                        let channelMode = "";
+                        if(data.mode === "SIMULATION") {
+                            channelMode = "\\n<span class='text-yellow-400 font-bold'>[SYSTEM_NOTICE] Running in Security Simulation Mode (Add Render Keys to make AWS Live)</span>";
+                        } else {
+                            channelMode = "\\n<span class='text-green-400 font-bold'>[AWS_S3_SUCCESS] Live Document asset uploaded straight to S3 bucket!</span>";
+                        }
                         
-                        terminal.innerHTML = `
-${channelMode}
-[AWS_BOTO3_SESSION] Validating Master IAM Role Credentials Mapping Token... [OK]
-<span class="text-blue-400 font-bold">[SQL_INSERT_SUCCESS] Record committed to primary relational sqlite3 log tracking table.</span>
-[ASSET_PATH] Target Asset: <span class="text-white font-bold">${data.target_asset}</span>
-[SECURITY_FLAG] Token Status: <span class="text-green-400 font-bold">${data.security_audit}</span>
-[DEPLOYMENT] Log pipeline operations locked under platform architect S.LALITH.
-                        `;
+                        let starVisual = "";
+                        for(let i=0; i<parseInt(ratingStars); i++) {
+                            starVisual += "⭐";
+                        }
+                        
+                        terminal.innerHTML = channelMode + 
+                        '\\n[AWS_BOTO3_SESSION] Validating Master IAM Role Credentials Mapping Token... [OK]' +
+                        '\\n<span class="text-blue-400 font-bold">[SQL_INSERT_SUCCESS] Record committed to primary relational sqlite3 log tracking table.</span>' +
+                        '\\n[ASSET_PATH] Target Asset: <span class="text-white font-bold">' + data.target_asset + '</span>' +
+                        '\\n[RATING_LOG] Active Evaluation: <span class="text-yellow-400 font-bold">' + starVisual + '</span>' +
+                        '\\n[SECURITY_FLAG] Token Status: <span class="text-green-400 font-bold">' + data.security_audit + '</span>' +
+                        '\\n[DEPLOYMENT] Log pipeline operations locked under platform architect S.LALITH.';
+                        
                         document.getElementById('commentText').value = "";
                     } else {
-                        terminal.innerHTML = `<span class="text-red-500">[FAULT] Error from system matrix: ${data.detail || 'Ingestion Loop Failure'}</span>`;
+                        terminal.innerHTML = '<span class="text-red-500">[FAULT] Error from system matrix: ' + (data.detail || 'Ingestion Loop Failure') + '</span>';
                     }
                 } catch (error) {
-                    terminal.innerHTML = `<span class="text-red-500">[NETWORK_ERROR] Cannot establish connection to Render API Gateway Server.</span>`;
+                    terminal.innerHTML = '<span class="text-red-500">[NETWORK_ERROR] Cannot establish connection to Render API Gateway Server.</span>';
                 }
             }
 
             async function fetchSQLDatabaseLogs() {
                 const terminal = document.getElementById('terminal');
-                terminal.innerText = "\\n[SQL_QUERY] Executing: SELECT * FROM office_logs ORDER BY id DESC...\\nFetching audit structures...";
+                terminal.innerText = '\\n[SQL_QUERY] Executing: SELECT * FROM office_logs ORDER BY id DESC...\\nFetching audit structures...';
                 
                 try {
                     const response = await fetch(`${BACKEND_API_URL}/office/audit-db-logs`);
                     const data = await response.json();
                     
                     if (data.logs && data.logs.length > 0) {
-                        let logString = "\\n--- PRIMARY SQL LOG ENGINE ENTRIES ---";
+                        let logString = '\\n--- PRIMARY SQL LOG ENGINE ENTRIES ---';
                         data.logs.forEach(log => {
-                            logString += `\\n[ID: ${log.id}] | User: ${log.user_name} | Security: ${log.security_status}\\nComment: "${log.comment_text}"\\nS3 URL: ${log.s3_path}\\n---------------------------------------`;
+                            let starCount = log.rating_stars ? log.rating_stars : 5;
+                            let starVisual = "";
+                            for(let i=0; i<starCount; i++) {
+                                starVisual += "⭐";
+                            }
+                            logString += '\\n[ID: ' + log.id + '] | User: ' + log.user_name + ' | Rating: ' + starVisual + ' | Security: ' + log.security_status + '\\nComment: "' + log.comment_text + '"\\nS3 URL: ' + log.s3_path + '\\n---------------------------------------';
                         });
                         terminal.innerText = logString;
                     } else {
-                        terminal.innerHTML = "\\n<span class='text-yellow-400'>[SQL_EMPTY] No audit entries detected inside the relational records.</span>";
+                        terminal.innerHTML = '\\n<span class="text-yellow-400">[SQL_EMPTY] No audit entries detected inside the relational records.</span>';
                     }
                 } catch (e) {
-                    terminal.innerHTML = "\\n<span class='text-red-500'>[SQL_FAULT] Database tracking connection line error.</span>";
+                    terminal.innerHTML = '\\n<span class="text-red-500">[SQL_FAULT] Database tracking connection line error.</span>';
                 }
             }
         </script>
@@ -256,7 +289,7 @@ async def root_status_check():
 @app.post("/office/submit-comment")
 async def submit_office_comment(payload: OfficeCommentPayload):
     try:
-        logger.info(f"Primary asset input processing from user: {payload.user_name}")
+        logger.info(f"Primary asset input processing from user: {payload.user_name} with rating {payload.rating_stars}")
         timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
         file_name = f"office-comments/comment_{timestamp_str}.txt"
         s3_uri_path = f"s3://{BUCKET_NAME}/{file_name}"
@@ -268,6 +301,7 @@ async def submit_office_comment(payload: OfficeCommentPayload):
             f"=========================================\n"
             f"Timestamp    : {datetime.now().isoformat()}\n"
             f"User Architect: {payload.user_name}\n"
+            f"Rating Assessment: {'⭐' * payload.rating_stars}\n"
             f"Comment Logs : {payload.comment_text}\n"
             f"-----------------------------------------\n"
             f"Security Status: {security_flag}\n"
@@ -288,13 +322,20 @@ async def submit_office_comment(payload: OfficeCommentPayload):
 
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
+        
+        try:
+            cursor.execute("ALTER TABLE office_logs ADD COLUMN rating_stars INTEGER DEFAULT 5")
+            conn.commit()
+        except sqlite3.OperationalError:
+            pass
+
         cursor.execute(
-            "INSERT INTO office_logs (user_name, comment_text, s3_path, security_status, timestamp) VALUES (?, ?, ?, ?, ?)",
-            (payload.user_name, payload.comment_text, s3_uri_path, security_flag, datetime.now().isoformat())
+            "INSERT INTO office_logs (user_name, comment_text, rating_stars, s3_path, security_status, timestamp) VALUES (?, ?, ?, ?, ?, ?)",
+            (payload.user_name, payload.comment_text, payload.rating_stars, s3_uri_path, security_flag, datetime.now().isoformat())
         )
         conn.commit()
         conn.close()
-        logger.info("Operational logging metrics synchronized inside sqlite3 table.")
+        logger.info("Operational logging metrics with Rating synced inside sqlite3 table.")
 
         return {
             "status": "SUCCESS",
