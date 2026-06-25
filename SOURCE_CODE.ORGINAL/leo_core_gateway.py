@@ -3,7 +3,7 @@ import boto3
 import logging
 import sqlite3
 from datetime import datetime
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
@@ -20,7 +20,6 @@ app = FastAPI(
     version="2.1.0"
 )
 
-# Robust CORS policy protecting transaction strings against cross-site scripting
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -39,7 +38,6 @@ aws_access_key = os.getenv("AWS_ACCESS_KEY_ID")
 aws_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 aws_region = os.getenv("AWS_REGION", "eu-north-1")
 
-# If keys are missing in Render settings, fall back to simulation mode instead of crashing
 if aws_access_key and aws_secret_key:
     s3_client = boto3.client(
         's3',
@@ -98,19 +96,39 @@ async def get_enterprise_ui_dashboard():
         <style>
             body { background-color: #0b0f19; font-family: 'Courier New', Courier, monospace; }
             .neon-border { box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); }
+            .matrix-card { background: rgba(31, 41, 55, 0.4); border: 1px solid rgba(75, 85, 99, 0.3); }
         </style>
     </head>
-    <body class="text-gray-200 min-h-screen p-6 flex flex-col items-center justify-center">
+    <body class="text-gray-200 min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
 
         <div class="w-full max-w-5xl bg-[#111827] border border-green-500/30 rounded-xl p-6 neon-border">
             
-            <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-700 pb-4 mb-6 gap-4">
                 <div>
-                    <h1 class="text-xl font-bold text-green-400 tracking-wider">LEO (Lalith Empowered Office) Enterprise Cloud Suite</h1>
+                    <h1 class="text-xl font-bold text-green-400 tracking-wider">LEO (Lalith Empowered Office) Project Cloud Suite</h1>
                     <p class="text-xs text-gray-400 mt-1">ARCHITECT: S.LALITH | <span class="text-green-500 font-bold animate-pulse">● HYPER_PRO_ACTIVE</span></p>
                 </div>
-                <div class="text-right text-xs text-blue-400 font-bold font-mono">
+                <div class="text-left md:text-right text-xs text-blue-400 font-bold font-mono">
                     SECURITY LEVEL: PRIMARY_CYBER_SHIELD
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                <div class="matrix-card rounded p-3 text-center border-l-2 border-l-green-500">
+                    <div class="text-xs font-bold text-green-400 uppercase tracking-wider">Python Engine</div>
+                    <div class="text-[10px] text-gray-400 mt-1">Core Logic Flow</div>
+                </div>
+                <div class="matrix-card rounded p-3 text-center border-l-2 border-l-blue-400">
+                    <div class="text-xs font-bold text-blue-400 uppercase tracking-wider">Java Processing</div>
+                    <div class="text-[10px] text-gray-400 mt-1">Microservices Bridge</div>
+                </div>
+                <div class="matrix-card rounded p-3 text-center border-l-2 border-l-yellow-500">
+                    <div class="text-xs font-bold text-yellow-400 uppercase tracking-wider">SQL Relational</div>
+                    <div class="text-[10px] text-gray-400 mt-1">Audit DB Ingestion</div>
+                </div>
+                <div class="matrix-card rounded p-3 text-center border-l-2 border-l-purple-500">
+                    <div class="text-xs font-bold text-purple-400 uppercase tracking-wider">Cybersecurity</div>
+                    <div class="text-[10px] text-gray-400 mt-1">Port Scan Arrays</div>
                 </div>
             </div>
 
@@ -118,7 +136,7 @@ async def get_enterprise_ui_dashboard():
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-green-400 uppercase tracking-widest mb-1">Network/Cloud Solutions ID</label>
-                        <input type="text" id="username" value="Lalith_Cloud_Architect" class="w-full bg-[#1f2937] border border-gray-700 rounded p-2 text-sm focus:outline-none focus:border-green-500 text-green-300">
+                        <input type="text" id="username" value="Lalith_Cloud_Architect" class="w-full bg-[#1f2937] border border-gray-700 rounded p-2 text-sm focus:outline-none focus:border-green-500 text-green-300 font-bold" readonly>
                     </div>
 
                     <div>
@@ -223,8 +241,15 @@ async def root_status_check():
     return {
         "status": "HYPER_PRO_ACTIVE",
         "architect": "S.LALITH",
+        "project_name": "LEO ENTERPRISE COST OPTIMIZER & CLOUD GATEWAY",
         "mode": "SIMULATION" if AWS_SIMULATION_MODE else "LIVE_AWS_PRODUCTION",
-        "capabilities": ["Primary Python", "Primary SQL Audit DB", "Cybersecurity Token Masking"],
+        "capabilities": [
+            "Primary Python Architecture Pipeline", 
+            "Java Microservices Processing Logic",
+            "SQL Data Ingestion & Storage Arrays", 
+            "Cybersecurity Port Scan & Vulnerability Agents", 
+            "AWS S3 Cost Optimization Structure"
+        ],
         "ui_interface_route": "/interface"
     }
 
@@ -237,7 +262,6 @@ async def submit_office_comment(payload: OfficeCommentPayload):
         s3_uri_path = f"s3://{BUCKET_NAME}/{file_name}"
         security_flag = "INTEGRITY_CHECK_PASSED (SHA-256 Token Mask)"
 
-        # 1. CYBERSECURITY DATA STRUCTURE GENERATION
         file_body_content = (
             f"=========================================\n"
             f" LALITH EMPOWERED OFFICE ENTERPRISE LOG \n"
@@ -249,7 +273,6 @@ async def submit_office_comment(payload: OfficeCommentPayload):
             f"Security Status: {security_flag}\n"
         )
         
-        # 2. AWS S3 CLUSTER DISPATCH (With Simulation Fallback)
         if not AWS_SIMULATION_MODE and s3_client:
             s3_client.put_object(
                 Bucket=BUCKET_NAME,
@@ -263,7 +286,6 @@ async def submit_office_comment(payload: OfficeCommentPayload):
             current_mode = "SIMULATION"
             logger.info("[SIMULATION] Asset stream processing bypassed AWS S3 upload safely.")
 
-        # 3. INTERCEPT ARCHITECTURE INTO SQL PIPELINE (SQL INSERT)
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         cursor.execute(
