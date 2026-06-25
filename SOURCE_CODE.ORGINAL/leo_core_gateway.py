@@ -251,6 +251,7 @@ ${channelMode}
 # -------------------------------------------------------------
 # 🌐 PRIMARY BACKEND API CORE MICROSERVICES
 # -------------------------------------------------------------
+@app.head("/")
 @app.get("/")
 async def root_status_check():
     return {
