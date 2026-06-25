@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO Project - Advanced Enterprise Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #1e293b;
+            background-color: #ffffff;
+            line-height: 1.6;
+            margin: 40px;
+        }
+        .section-break {
+            page-break-before: always;
+            border-top: 4px solid #1e293b;
+            margin-top: 50px;
+            padding-top: 20px;
+        }
+        .doc-header {
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .doc-title {
+            font-size: 22pt;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 12pt;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        h2 {
+            font-size: 15pt;
+            color: #1e3a8a;
+            margin-top: 30px;
+            border-left: 4px solid #3b82f6;
+            padding-left: 10px;
+        }
+        p, li {
+            font-size: 11pt;
+            color: #334155;
+            text-align: justify;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .code-block {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Consolas', monospace;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 10pt;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid #334155;
+        }
+        .table-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .table-matrix th {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+            font-size: 11pt;
+            border: 1px solid #1e3a8a;
+        }
+        .table-matrix td {
+            padding: 10px;
+            font-size: 10.5pt;
+            border: 1px solid #cbd5e1;
+        }
+        .table-matrix tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .badge-pass {
+            background-color: #10b981;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9pt;
+            font-weight: bold;
+        }
+        .badge-sec {
+            background-color: #6366f1;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9pt;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- DOCUMENT 1: DEVOPS DEPLOYMENT RUNBOOK -->
+    <div class="doc-header">
+        <div class="doc-title">Document 01: DevOps Deployment Guide</div>
+        <div class="subtitle">System Runbook for Continuous Integration & Cloud Infrastructure Provisioning</div>
+    </div>
+    
+    <h2>1. Initialization & Version Control Workflow</h2>
+    <p>
+        The production architecture sequence begins with initializing an isolated local environment wrapper and standardizing repository pipelines using Git source control structures. Execute the deployment sequence lines inside the local workstation terminal layer:
+    </p>
+    <div class="code-block">
+git init
+git add .
+git commit -m "Production Build v2.5.0: Integrated Dynamic Relational SQL & AWS Ingestion Matrices"
+git branch -M main
+git remote add origin https://github.com/Lalith-Cloud-Architect/leo-cloud-gateway.git
+git push -u origin main
+    </div>
+
+    <h2>2. AWS Cloud Infrastructure Setup (IAM & S3)</h2>
+    <p>
+        To ensure secure communication across the service gateways without exposing master accounts, the following infrastructure deployment protocol is required:
+    </p>
+    <ol>
+        <li>Navigate to the <strong>AWS Management Console</strong> pointing target nodes to the Stockholm <code>eu-north-1</code> cloud region cluster.</li>
+        <li>Access the <strong>IAM (Identity and Access Management) Dashboard</strong> and create an isolated programmatically accessible deployment user.</li>
+        <li>Generate a secure credentials token pair consisting of an <code>AWS_ACCESS_KEY_ID</code> and an <code>AWS_SECRET_ACCESS_KEY</code>.</li>
+        <li>Navigate to the <strong>S3 Console</strong> and create a secure data object storage block bucket explicitly assigned the unique globally bounded string namespace identifier: <code>leo-optimized-bucket-lalith</code>.</li>
+    </ol>
+
+    <h2>3. Render Platform Integration Sequence</h2>
+    <p>
+        To transition the local microservices to a production live runtime framework, execute the cloud provisioning lifecycle mapping sequence within the Render platform network nodes:
+    </p>
+    <ul>
+        <li>Log in to the Render Console and link your validated GitHub source repository.</li>
+        <li>Provision a new <strong>Web Service</strong> container using the Python 3 native environment architecture stack.</li>
+        <li>Specify the required production runtime server invocation trigger command string sequence inside the platform console parameters layer: <code>uvicorn leo_core_gateway:app --host 0.0.0.0 --port $PORT</code>.</li>
+    </ol>
+
+
+    <!-- DOCUMENT 2: CYBERSECURITY COMPLIANCE REPORT -->
+    <div class="section-break"></div>
+    <div class="doc-header">
+        <div class="doc-title">Document 02: Cybersecurity & Identity Compliance Report</div>
+        <div class="subtitle">Security Architecture Matrix, IAM Principle of Least Privilege, and Token Masking Definitions</div>
+    </div>
+
+    <h2>1. Privilege Mitigation Strategy (IAM Policy Document)</h2>
+    <p>
+        To maximize cloud perimeter protection, the system rejects unrestricted administrative access. The application configuration utilizes the security standard **Principle of Least Privilege (PoLP)**. The programmatic worker token is restricted to executing data ingestion and read-loop queries strictly inside the LEO storage grid using the following optimized JSON security schema policy matrix:
+    </p>
+    <div class="code-block">
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "LeoS3StorageIngestionLeastPrivilege",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::leo-optimized-bucket-lalith",
+                "arn:aws:s3:::leo-optimized-bucket-lalith/*"
+            ]
+        }
+    ]
+}
+    </div>
+
+    <h2>2. Data Defenses & Threat Modeling Matrix</h2>
+    <p>
+        The framework integrates dedicated DevSecOps validation mechanisms to manage and isolate transactional traffic variables safely across production gateways:
+    </p>
+    <ul>
+        <li><strong>Credential Isolation Masking:</strong> Sensitive access profiles are strictly banned from code-level persistence. API components ingest configurations dynamically using secure <code>os.getenv</code> runtime hooks bound to encrypted variables.</li>
+        <li><strong>Cross-Site Scripting (XSS) Mitigation:</strong> A global Cross-Origin Resource Sharing (CORS) security header enforcement block intercepts client transactions, allowing only signed method types.</li>
+        <li><strong>Data Injection Guardrails:</strong> Database interactions avoid arbitrary raw string formatting, employing parameterized, bound array queries via SQLAlchemy and sqlite3 interfaces to block malicious payload variants.</li>
+    </ul>
+
+
+    <!-- DOCUMENT 3: API REFERENCE MANUAL -->
+    <div class="section-break"></div>
+    <div class="doc-header">
+        <div class="doc-title">Document 03: API Reference Manual</div>
+        <div class="subtitle">Core REST Endpoint Definitions, Schema Assertions, and Transaction Framework Mappings</div>
+    </div>
+
+    <h2>1. Active Architectural Endpoint Configurations</h2>
+    <p>
+        The system gateway registers and listens on specialized routes designed to handle processing matrix parameters and telemetry streams:
+    </p>
+
+    <table class="table-matrix">
+        <thead>
+            <tr>
+                <th>Route Method</th>
+                <th>Endpoint Destination</th>
+                <th>Payload Interface Requirement</th>
+                <th>Transactional Processing Output Effect</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="badge-sec">GET</span></td>
+                <td>`/interface`</td>
+                <td>None (Browser Context Open)</td>
+                <td>Renders the full graphical HTML/Tailwind web console management dashboard page.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-sec">POST</span></td>
+                <td>`/office/submit-comment`</td>
+                <td>JSON Model: `OfficeCommentPayload`</td>
+                <td>Performs dual-action data injection into local SQL log tables and live AWS S3 storage streams.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-sec">POST</span></td>
+                <td>`/office/submit-rating`</td>
+                <td>JSON Model: `RatingPayload`</td>
+                <td>Commits performance score indicators directly into the primary relational feedback structures.</td>
+            </tr>
+            <tr>
+                <td><span class="badge-sec">GET</span></td>
+                <td>`/office/rating-stats`</td>
+                <td>None</td>
+                <td>Queries tables to extract, compute, and return real-time rating telemetry averages.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>2. Schema Schema Payload Specifications</h2>
+    <h3>2.1 Office Log Ingestion Ingestion Template (POST Request Body)</h3>
+    <div class="code-block">
+{
+    "user_name": "string (Required: Unique System Cloud Identifier Key)",
+    "comment_text": "string (Required: Raw Uncompressed Transaction Log Chunks)"
+}
+    </div>
+
+    <h3>2.2 Response Model Matrix (200 OK Status)</h3>
+    <div class="code-block">
+{
+    "status": "SUCCESS",
+    "mode": "LIVE_AWS_PRODUCTION / SIMULATION",
+    "target_asset": "s3://leo-optimized-bucket-lalith/office-comments/comment_timestamp.txt",
+    "security_audit": "INTEGRITY_CHECK_PASSED (SHA-256 Token Mask)"
+}
+    </div>
+
+
+    <!-- DOCUMENT 4: USER ACCEPTANCE TESTING LOG -->
+    <div class="section-break"></div>
+    <div class="doc-header">
+        <div class="doc-title">Document 04: User Acceptance Testing (UAT) Log</div>
+        <div class="subtitle">System Assurance Matrix, Component Quality Controls, and Integration Assertions</div>
+    </div>
+
+    <h2>1. Production Assurance Execution Logs</h2>
+    <p>
+        The validation sequence evaluated the framework's behavior under edge conditions and high-throughput operational runs. The verified behavioral test logging results are captured below:
+    </p>
+
+    <table class="table-matrix">
+        <thead>
+            <tr>
+                <th>Test ID</th>
+                <th>Target Component Check</th>
+                <th>Simulated Operational State Input Trigger</th>
+                <th>Expected System Processing Behaviour Output</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>UAT-001</td>
+                <td>Input Data Validation Handling</td>
+                <td>Execute submit payload with blank spaces or null characters.</td>
+                <td>Intercept operation and return `[VALIDATION_ERROR]` string without crashing pipelines.</td>
+                <td><span class="badge-pass">PASSED</span></td>
+            </tr>
+            <tr>
+                <td>UAT-002</td>
+                <td>DevSecOps Connection Fallback</td>
+                <td>Wipe AWS token credentials from the active env variables tracking map.</td>
+                <td>Gracefully shift system states into `SIMULATION MODE` to keep the UI active.</td>
+                <td><span class="badge-pass">PASSED</span></td>
+            </tr>
+            <tr>
+                <td>UAT-003</td>
+                <td>Dual-Action Data Ingestion Sync</td>
+                <td>Trigger text array submission block on the interface terminal.</td>
+                <td>Simultaneously write records to the local SQL audit rows and generate real S3 file objects.</td>
+                <td><span class="badge-pass">PASSED</span></td>
+            </tr>
+            <tr>
+                <td>UAT-004</td>
+                <td>Dynamic Rating Aggregation Engine</td>
+                <td>Submit multiple 4-star and 5-star evaluation scores via the dashboard widget.</td>
+                <td>Execute real-time mathematical score aggregation averages and refresh display interfaces.</td>
+                <td><span class="badge-pass">PASSED</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>2. Verification Architecture Approval</h2>
+    <p>
+        All functional validation passes completed with zero service failures, runtime performance blocks, or exception leaks across the gateway interfaces. The system runtime has successfully satisfied the verification controls.
+    </p>
+
+    <p style="margin-top: 60px; font-size: 10pt; text-align: center; color: #64748b; font-family: monospace;">
+        PROJECT ASSURANCE MASTER LOG SHIELD IDENTIFICATION: LEO_V2.5.0_COMPLIANCE_APPROVED
+    </p>
+
+</body>
+</html>

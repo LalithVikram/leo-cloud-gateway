@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO Enterprise Suite - Backup & Disaster Recovery Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #1e293b;
+            background-color: #ffffff;
+            line-height: 1.6;
+            margin: 40px;
+            padding: 0;
+        }
+        .header-container {
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        .project-title {
+            font-size: 24pt;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .subtitle {
+            font-size: 13pt;
+            color: #4b5563;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+        .meta-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 11pt;
+        }
+        h2 {
+            font-size: 15pt;
+            color: #1e3a8a;
+            border-left: 5px solid #dc2626;
+            padding-left: 12px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            font-size: 12pt;
+            color: #0f172a;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        p, li {
+            font-size: 11pt;
+            color: #334155;
+            text-align: justify;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .code-container {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 18px;
+            border-radius: 6px;
+            font-size: 10pt;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #1e293b;
+        }
+        .table-data {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        .table-data th {
+            background-color: #1e293b;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: left;
+            padding: 12px;
+            font-size: 11pt;
+            border: 1px solid #0f172a;
+        }
+        .table-data td {
+            padding: 12px;
+            font-size: 10.5pt;
+            border: 1px solid #e2e8f0;
+        }
+        .table-data tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .badge {
+            background-color: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 9pt;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- EXECUTIVE HEADER -->
+    <div class="header-container">
+        <h1 class="project-title">LEO Enterprise Cloud Suite</h1>
+        <div class="subtitle">Disaster Recovery Manual: Secure Backup & Relational Database Corruption Resolution</div>
+    </div>
+
+    <!-- ARCHITECT METADATA MATRIX -->
+    <div class="meta-box">
+        <strong>Standard Operating Procedure (SOP):</strong> Emergency Data Mitigation and Maintenance Lifecycle<br>
+        <strong>Target DB Node:</strong> <code>lalith_office_audit.db</code> (SQLite3 Database Core Layer)<br>
+        <strong>Infrastructure Perimeter:</strong> Cloud Gateway and Local Failover Enclaves
+    </div>
+
+    <!-- SECTION 1: PROACTIVE BACKUP STRATEGY -->
+    <h2>1. Proactive Backup Execution Strategy</h2>
+    <p>
+        To avoid permanent data deletion or structural runtime failure across cloud integration instances, secure snapshot captures are systematically initiated before performing software patching or data relocation runs.
+    </p>
+    
+    <h3>1.1 Automated Hot Backup Implementation</h3>
+    <p>
+        SQLite3 relational tables maintain internal page variables that can become lock-blocked during heavy thread execution writes. Utilizing standard filesystem copy mechanisms on live execution files poses high risk. Instead, run the secure native terminal online backup engine array command:
+    </p>
+    <div class="code-container">
+<pre style="margin: 0;">
+# Safe Online Database Relocation Snapshot Generation
+sqlite3 lalith_office_audit.db ".backup 'backups/lalith_office_audit_safe_snap.db'"
+</pre>
+    </div>
+
+    <!-- SECTION 2: CRITICAL ERROR CODES RESOLUTION -->
+    <h2>2. Troubleshooting Common Runtime Errors</h2>
+    <p>
+        When launching microservices on the cloud environment node, configuration mismatches or corrupted pipeline streams can trigger errors. Use the following playbook matrix parameters to debug and clear structural operational faults:
+    </p>
+
+    <table class="table-data">
+        <thead>
+            <tr>
+                <th>Observed Terminal Exception Error</th>
+                <th>Root Cause Analysis</th>
+                <th>Immediate Mitigation Step / Resolution Commands</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="badge">AWS_CREDENTIALS_MISSING</span></td>
+                <td>FastAPI application environment variables failed to load from Render environment vaults.</td>
+                <td>Verify Render Environment configurations mapping keys array parameters; system falls back to simulation mode automatically.</td>
+            </tr>
+            <tr>
+                <td><span class="badge">sqlite3.OperationalError: no such table</span></td>
+                <td>Initialization engine skipped sequence initialization steps or initialization script tracking arrays failed.</td>
+                <td>Execute the baseline code initialization function block trigger: <code>init_primary_sql_database()</code> during app startup loops.</td>
+            </tr>
+            <tr>
+                <td><span class="badge">database disk image is malformed</span></td>
+                <td>Physical binary blocks inside <code>.db</code> suffered structural damage due to abrupt thread execution terminations.</td>
+                <td>Initiate the complete low-level structural recovery data mapping pipeline (See Section 3).</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SECTION 3: CORRUPTED DATABASE RECOVERY PROTOCOL -->
+    <h2>3. Corrupted Database Recovery Protocol</h2>
+    <p>
+        If a structural file image becomes corrupted (e.g., throwing a <code>malformed image</code> exception), direct binary access queries will fail. The structural data blocks can be salvaged and reconstructed using a step-by-step text-stream dumping translation routine:
+    </p>
+
+    <h3>Step 3.1: Extract Structural SQL Ingestion Dumps</h3>
+    <p>
+        Isolate the corrupted source file image and force a low-level schema dump string stream by bypassing binary checking structures using the native database engine interface:
+    </p>
+    <div class="code-container">
+<pre style="margin: 0;">
+# Forces the extraction of valid data lines while filtering out corrupted binary blocks
+sqlite3 lalith_office_audit.db .dump > recovery_stream_dump.sql
+</pre>
+    </div>
+
+    <h3>Step 3.2: Sanitize Transaction Audit Scripts</h3>
+    <p>
+        When an uncompleted pipeline loop is abruptly aborted, it can write a terminal transaction tracking string constraint that blocks processing. Open the generated <code>recovery_stream_dump.sql</code> script block in a standard layout text editor and verify that the final line parameters commit execution cleanly:
+    </p>
+    <div class="code-container">
+<pre style="margin: 0;">
+-- Ensure the file contains the proper transaction commitment footer
+COMMIT;
+</pre>
+    </div>
+    <p>
+        <em>Note: If the file execution trace script stops abruptly or shows an active <code>ROLLBACK;</code> string assignment at the end of the dump, delete that specific row text asset and manually append the string <code>COMMIT;</code> to authorize table data migration.</em>
+    </p>
+
+    <h3>Step 3.3: Rebuild the Relational Schema Instance</h3>
+    <p>
+        Compile the clean text stream dump data back into a fresh relational database binary system cluster matrix. This completely rebuilds index elements from clean lines:
+    </p>
+    <div class="code-container">
+<pre style="margin: 0;">
+# Reconstructs table rows, parameters data entries, and system configurations
+sqlite3 new_lalith_office_audit.db < recovery_stream_dump.sql
+</pre>
+    </div>
+
+    <h3>Step 3.4: Integrity Verification Affirmation</h3>
+    <p>
+        Before substituting the reconstructed file binary back into the active production web gateway root path, execute an integrity check validation command to certify database parameters optimization consistency:
+    </p>
+    <div class="code-container">
+<pre style="margin: 0;">
+sqlite3 new_lalith_office_audit.db "PRAGMA integrity_check;"
+# Target operational system output must return: ok
+</pre>
+    </div>
+    <p>
+        Once the terminal affirms status <code>ok</code>, swap the file names by executing <code>mv new_lalith_office_audit.db lalith_office_audit.db</code> to restore live system operations.
+    </p>
+
+    <!-- VERIFICATION FOOTER -->
+    <h2>4. Regulatory System Compliance Sign-off</h2>
+    <p>
+        This disaster recovery manual provides an operational roadmap for maintaining data persistence and structural integrity within the LEO Enterprise Framework. Following these sequential steps prevents unexpected data loss and safely resolves service exceptions.
+    </p>
+    
+    <p style="margin-top: 60px; font-size: 10pt; text-align: center; color: #94a3b8; font-family: monospace;">
+        SECURITY ENCLAVE OPERATION DOCUMENTATION VALIDATED UNDER RUNTIME CONTROL PROTOCOL LEO_RECOVERY_APPROVED.
+    </p>
+
+</body>
+</html>
